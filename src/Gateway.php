@@ -197,7 +197,7 @@ class Gateway extends AbstractGateway
     public function detailsReceipt(string $id): AbstractDetailsReceiptResponse
     {
         $options = [
-            'date_from' => Helper::dateFormattingForSend(Carbon::now()->subDays(-1)->startOfDay()),
+            'date_from' => Helper::dateFormattingForSend(Carbon::now()->subDays(1)->startOfDay()),
             'date_to'   => Helper::dateFormattingForSend(Carbon::now()->endOfDay()),
             'deleted'   => false,
         ];
