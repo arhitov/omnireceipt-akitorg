@@ -23,7 +23,7 @@ class ListReceiptsResponse extends AbstractListReceiptsResponse
             return $data;
         }
 
-        $payload = json_decode($this->getData(), true);
+        $payload = $this->getPayload();
 
         if (! is_array($payload)) {
             return new ArrayCollection;

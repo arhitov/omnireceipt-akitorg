@@ -19,4 +19,9 @@ trait BaseResponseTrait
             default => $this,
         };
     }
+
+    public function getPayload(): ?array
+    {
+        return json_decode($this->getData(), true);
+    }
 }
