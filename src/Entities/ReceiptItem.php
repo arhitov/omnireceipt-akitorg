@@ -14,6 +14,7 @@ use Omnireceipt\Common\Entities\ReceiptItem as BaseReceiptItem;
  * @method self setCode(string $value)
  *
  * @method int getProductType() // Тип товара: NORMAL - товар, SERVICE - услуга, TOBACCO_MARKED - Маркированный табак, SHOES_MARKED - Маркированная обувь, MEDICINE_MARKED - Маркированные лекарства, TYRES_MARKED - Шины, PERFUME_MARKED - Парфюмерия, PHOTOS_MARKED - Фототовары, LIGHT_INDUSTRY_MARKED - Легкая промышленность, TOBACCO_PRODUCTS_MARKED - Альтернативный табак, DAIRY_MARKED - Молочная продукция, WATER_MARKED - Упакованая вода, BIKE_MARKED - Велосипеды
+ * @method int getProductTypeOrNull() // Тип товара: NORMAL - товар, SERVICE - услуга, TOBACCO_MARKED - Маркированный табак, SHOES_MARKED - Маркированная обувь, MEDICINE_MARKED - Маркированные лекарства, TYRES_MARKED - Шины, PERFUME_MARKED - Парфюмерия, PHOTOS_MARKED - Фототовары, LIGHT_INDUSTRY_MARKED - Легкая промышленность, TOBACCO_PRODUCTS_MARKED - Альтернативный табак, DAIRY_MARKED - Молочная продукция, WATER_MARKED - Упакованая вода, BIKE_MARKED - Велосипеды
  * @method self setProductType(int $value)
  *
  * @method int|float getPrice() // Цена (необходимый атрибут)
@@ -21,9 +22,11 @@ use Omnireceipt\Common\Entities\ReceiptItem as BaseReceiptItem;
  * @method self setPrice(int|float $value)
  *
  * @method string getUnitUuid() // Идентификатор единицы измерения товара
+ * @method string getUnitUuidOrNull() // Идентификатор единицы измерения товара
  * @method self setUnitUuid(string $value)
  *
  * @method string getUnit() // Наименование единицы измерения
+ * @method string getUnitOrNull() // Наименование единицы измерения
  * @method self setUnit(string $value)
  *
  * @method int|float getVatRate() // Ставка НДС

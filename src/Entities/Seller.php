@@ -6,18 +6,23 @@ use Omnireceipt\Common\Entities\Seller as BaseSeller;
 
 /**
  * @method string getUuid() // Идентификатор организации поставщика
+ * @method string getUuidOrNull() // Идентификатор организации поставщика
  * @method self setUuid(string $value)
  *
  * @method string getName() // Наименование организации поставщика
+ * @method string getNameOrNull() // Наименование организации поставщика
  * @method self setName(string $value)
  *
  * @method string getInn() // ИНН организации поставщика
+ * @method string getInnOrNull() // ИНН организации поставщика
  * @method self setInn(string $value)
  *
  * @method string getSite() // Адрес интернет-магазина
+ * @method string getSiteOrNull() // Адрес интернет-магазина
  * @method self setSite(string $value)
  *
  * @method string getTs() // Система налогообложения
+ * @method string getTsOrNull() // Система налогообложения
  * @method self setTs(string $value)
  */
 class Seller extends BaseSeller

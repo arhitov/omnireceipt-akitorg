@@ -7,12 +7,15 @@ use Omnireceipt\Common\Entities\Receipt as BaseReceipt;
 
 /**
  * @method string getUuid() // Идентификатор документа
+ * @method string getUuidOrNull() // Идентификатор документа
  * @method self setUuid(string $value)
  *
  * @method string getDocDate() // Дата документа (2016-08-25 13:48:01)
+ * @method string getDocDateOrNull() // Дата документа (2016-08-25 13:48:01)
  * @method self setDocDate(string $value)
  *
  * @method string getDocNum() // Номер документа
+ * @method string getDocNumOrNull() // Номер документа
  * @method self setDocNum(string $value)
  *
  * @method string getInfo() // Комментарий к документу
@@ -20,6 +23,7 @@ use Omnireceipt\Common\Entities\Receipt as BaseReceipt;
  * @method self setInfo(string $value)
  *
  * @method int getPayType()
+ * @method int getPayTypeOrNull()
  * @method self setPayType(int $value)
  *
  * @method \Omnireceipt\AkiTorg\Entities\Seller getSeller()
