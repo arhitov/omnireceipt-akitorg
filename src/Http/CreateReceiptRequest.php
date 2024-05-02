@@ -2,6 +2,7 @@
 
 namespace Omnireceipt\AkiTorg\Http;
 
+use Omnireceipt\AkiTorg\Supports\Helper;
 use Omnireceipt\Common\Http\Request\AbstractCreateReceiptRequest;
 use Omnireceipt\Common\Http\Response\AbstractResponse;
 
@@ -64,7 +65,7 @@ class CreateReceiptRequest extends AbstractCreateReceiptRequest
 
         return array_filter([
             'uuid'            => $receipt->getUuid(),                                  // String Идентификатор документа, required
-            'doc_date'        => $receipt->getDate(),                                  // String Дата документа, required (2016-08-25 13:48:01)
+            'doc_date'        => Helper::dateFormattingForSend($receipt->getDate()),   // String Дата документа, required (2016-08-25 13:48:01)
             'doc_num'         => $receipt->getDocNum(),                                // String Номер документа, required
             'client_uuid'     => $customer->getUuid(),                                 // String Идентификатор покупателя, required
             'client_name'     => $customer->getName(),                                 // String Наименование покупателя, required

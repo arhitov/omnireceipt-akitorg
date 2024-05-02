@@ -19,6 +19,7 @@ use Omnireceipt\AkiTorg\Http\DetailsReceiptResponse;
 use Omnireceipt\AkiTorg\Http\ListReceiptsResponse;
 use Omnireceipt\AkiTorg\Http\PaymentsReceiptRequest;
 use Omnireceipt\AkiTorg\Http\SalesReceiptRequest;
+use Omnireceipt\AkiTorg\Supports\Helper;
 use Omnireceipt\Common\AbstractGateway;
 use Omnireceipt\AkiTorg\Entities\Customer;
 use Omnireceipt\AkiTorg\Entities\Seller;
@@ -88,7 +89,7 @@ class Gateway extends AbstractGateway
         $properties = $this->getParameters()['default_properties']['receipt'] ?? [];
 
         $properties['uuid'] ??= Uuid::v4()->toRfc4122();
-        $properties['date'] ??= Carbon::now()->toString();
+        $properties['date'] ??= Helper::dateFormattingForSend(Carbon::now());
 
         $seller = $this->getSeller();
         if ($seller) {
@@ -187,6 +188,7 @@ class Gateway extends AbstractGateway
      * Get check details
      * AkiTorg does not have direct access to information on the receipt,
      * so a sample is made for the period and the receipt is searched.
+     * He is trying to find a receipt in the pool for the last 24 hours.
      *
      * @param string $id
      * @return AbstractDetailsReceiptResponse
@@ -195,8 +197,8 @@ class Gateway extends AbstractGateway
     public function detailsReceipt(string $id): AbstractDetailsReceiptResponse
     {
         $options = [
-            'date_from' => '2024-04-25 00:00:00',
-            'date_to'   => '2024-04-30 23:59:59',
+            'date_from' => Helper::dateFormattingForSend(Carbon::now()->subDays(-1)->startOfDay()),
+            'date_to'   => Helper::dateFormattingForSend(Carbon::now()->endOfDay()),
             'deleted'   => false,
         ];
 

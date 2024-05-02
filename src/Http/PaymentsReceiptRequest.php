@@ -2,6 +2,7 @@
 
 namespace Omnireceipt\AkiTorg\Http;
 
+use Omnireceipt\AkiTorg\Supports\Helper;
 use Omnireceipt\Common\Http\Response\AbstractResponse;
 
 class PaymentsReceiptRequest extends AbstractListReceiptsRequest
@@ -11,8 +12,8 @@ class PaymentsReceiptRequest extends AbstractListReceiptsRequest
     public function sendData(array $data): AbstractResponse
     {
         $options = [
-            'date_from' => $data['date_from'],
-            'date_to'   => $data['date_to'],
+            'date_from' => Helper::dateFormattingForSend($data['date_from']),
+            'date_to'   => Helper::dateFormattingForSend($data['date_to']),
             'deleted'   => $data['deleted'],
         ];
 
