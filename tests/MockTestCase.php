@@ -1,4 +1,12 @@
 <?php
+/**
+ * AkiTorg driver for Omnireceipt fiscal receipt processing library
+ *
+ * @link      https://github.com/arhitov/omnireceipt-akitorg
+ * @package   omnireceipt/common
+ * @license   MIT
+ * @copyright Copyright (c) 2024, Alexander Arhitov, clgsru@gmail.com
+ */
 
 namespace Omnireceipt\AkiTorg\Tests;
 
@@ -11,7 +19,6 @@ use Omnireceipt\Common\Contracts\Http\ResponseInterface;
 use Http\Mock\Client as MockClient;
 use Omnireceipt\Common\Http\Client;
 use Symfony\Component\HttpFoundation\Request as HttpRequest;
-
 
 class MockTestCase extends TestCase
 {
