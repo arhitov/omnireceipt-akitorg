@@ -5,6 +5,10 @@ namespace Omnireceipt\AkiTorg\Http;
 use Omnireceipt\AkiTorg\Supports\Helper;
 use Omnireceipt\Common\Http\Response\AbstractResponse;
 
+/**
+ * Получить оплаты(чеки) созданные на основании документов(заказов) из облака приложения.
+ * На этом моменте чек уже создан.
+ */
 class PaymentsReceiptRequest extends AbstractListReceiptsRequest
 {
     protected string $endpoint = 'https://epsapi.akitorg.ru/api/v1/stores/{store_uuid}/payments';

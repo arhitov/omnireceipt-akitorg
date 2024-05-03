@@ -36,27 +36,45 @@ class DetailsReceiptTest extends MockTestCase
             'Response_Failure_400.txt',
             'Response_Failure_400.txt',
         ]);
+        $uuid = 'find-7062-4a5f-aa20-35213db1397c';
 
-        $response = $this->gateway->detailsReceipt('dafadc58-e287-44a0-a7a0-492e3eb34f40');
+        $response = $this->gateway->detailsReceipt($uuid);
 
         $this->assertFalse($response->isSuccessful());
         $this->assertNull($response->getReceipt());
     }
 
+    public function testNotFound()
+    {
+        $this->setMockHttpResponse([
+            'Sales_Successful_Another.txt',
+            'Payments_Successful_Another.txt',
+        ]);
+        $uuid = 'find-7062-4a5f-aa20-35213db1397c';
+
+        $response = $this->gateway->detailsReceipt($uuid);
+
+        $this->assertTrue($response->isSuccessful());
+
+        $receipt = $response->getReceipt();
+        $this->assertNull($receipt);
+    }
+
     public function testPending()
     {
         $this->setMockHttpResponse([
-            'Payments_Successful.txt',
             'Sales_Successful.txt',
+            'Payments_Successful_Another.txt',
         ]);
+        $uuid = 'find-7062-4a5f-aa20-35213db1397c';
 
-        $response = $this->gateway->detailsReceipt('sales-9827-4772-b925-75c0b3399048');
+        $response = $this->gateway->detailsReceipt($uuid);
 
         $this->assertTrue($response->isSuccessful());
 
         $receipt = $response->getReceipt();
         $this->assertInstanceOf(Receipt::class, $receipt);
-
+        $this->assertEquals($uuid, $receipt->getUuid());
         $this->assertTrue($receipt->isPending());
         $this->assertFalse($receipt->isSuccessful());
     }
@@ -64,17 +82,18 @@ class DetailsReceiptTest extends MockTestCase
     public function testSuccessful()
     {
         $this->setMockHttpResponse([
-            'Payments_Successful.txt',
             'Sales_Successful.txt',
+            'Payments_Successful.txt',
         ]);
+        $uuid = 'find-7062-4a5f-aa20-35213db1397c';
 
-        $response = $this->gateway->detailsReceipt('payments-9827-4772-b925-75c0b3399048');
+        $response = $this->gateway->detailsReceipt($uuid);
 
         $this->assertTrue($response->isSuccessful());
 
         $receipt = $response->getReceipt();
         $this->assertInstanceOf(Receipt::class, $receipt);
-
+        $this->assertEquals($uuid, $receipt->getUuid());
         $this->assertFalse($receipt->isPending());
         $this->assertTrue($receipt->isSuccessful());
     }

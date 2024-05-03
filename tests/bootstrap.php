@@ -2,6 +2,20 @@
 
 $_SERVER['DOCUMENT_ROOT'] = realpath(dirname(__FILE__) . '/..');
 
+if (! function_exists('backtrace')) {
+    function backtrace($limit = 100): void
+    {
+        $backtraceList = debug_backtrace(limit: $limit);
+        foreach ($backtraceList as $backtrace) {
+            [
+                'file' => $file,
+                'line' => $line,
+            ] = $backtrace ?? ['file' => 'undefined', 'line' => 'undefined'];
+            echo "\n" . $file . ':' . $line . "\n";
+        }
+    }
+}
+
 if (! function_exists('dump')) {
     function dump(): void
     {
@@ -27,6 +41,37 @@ if (! function_exists('dd')) {
     {
         dump(...func_get_args());
         exit;
+    }
+}
+
+if (! function_exists('config')) {
+    /**
+     * @param string $key
+     * @param $default
+     * @return mixed
+     * @throws \ErrorException
+     */
+    function config(string $key, $default = null): mixed
+    {
+        if (str_contains($key, '..')) {
+            throw new ErrorException('Key name error');
+        }
+        $keyExp = explode('.', $key);
+        $value = require __DIR__ . '/../config/' . $keyExp[0] . '.php';
+        unset($keyExp[0]);
+
+        if (! empty($keyExp)) {
+            foreach ($keyExp as $keyPart) {
+                if (is_array($value) && array_key_exists($keyPart, $value)) {
+                    $value = $value[$keyPart];
+                } else {
+                    return $default;
+                }
+            }
+            return $value;
+        }
+
+        return $value;
     }
 }
 

@@ -41,7 +41,8 @@
         "phpunit/phpunit": "*",
         "php-http/mock-client": "*",
         "mockery/mockery": "*",
-        "php-http/discovery": "*"
+        "php-http/discovery": "*",
+        "ext-readline": "*"
     },
     "scripts": {
         "test": "phpunit"

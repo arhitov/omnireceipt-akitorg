@@ -18,7 +18,9 @@ use Omnireceipt\AkiTorg\Http\CreateReceiptRequest;
 use Omnireceipt\AkiTorg\Http\DetailsReceiptResponse;
 use Omnireceipt\AkiTorg\Http\ListReceiptsResponse;
 use Omnireceipt\AkiTorg\Http\PaymentsReceiptRequest;
+use Omnireceipt\AkiTorg\Http\PaymentsReceiptResponse;
 use Omnireceipt\AkiTorg\Http\SalesReceiptRequest;
+use Omnireceipt\AkiTorg\Http\SalesReceiptResponse;
 use Omnireceipt\AkiTorg\Supports\Helper;
 use Omnireceipt\Common\AbstractGateway;
 use Omnireceipt\AkiTorg\Entities\Customer;
@@ -161,28 +163,31 @@ class Gateway extends AbstractGateway
      */
     public function listReceipts(array $options = []): AbstractListReceiptsResponse
     {
-        /** @var ListReceiptsResponse $responsePayments */
-        $responsePayments = $this->createRequest(static::classNamePaymentsReceiptsRequest(), $options)->send();
-
-        /** @var ListReceiptsResponse $responseSales */
+        /** @var SalesReceiptResponse $responseSales */
         $responseSales = $this->createRequest(static::classNameSalesReceiptsRequest(), $options)->send();
 
+        /** @var PaymentsReceiptResponse $responsePayments */
+        $responsePayments = $this->createRequest(static::classNamePaymentsReceiptsRequest(), $options)->send();
+
+        $collection = new ArrayCollection;
+
+        foreach ($responseSales->getList() as $receipt) {
+            $collection->set($receipt->getUuid(), $receipt);
+        }
+        foreach ($responsePayments->getList() as $receiptConfirmed) {
+            /** @var Receipt $receiptSales */
+            $receiptSales = $collection->get($receiptConfirmed->getSaleUuid());
+            if (! is_null($receiptSales)) {
+                $receiptSales->setPayment($receiptConfirmed);
+            }
+        }
+
         return new ListReceiptsResponse(
-            $responseSales->isSuccessful()
-                ? $responseSales->getRequest()
-                : $responsePayments->getRequest(),
-            new ArrayCollection(
-                array_merge(
-                    $responsePayments->getList()->toArray(),
-                    $responseSales->getList()->toArray(),
-                )
-            ),
-            $responseSales->isSuccessful()
-                ? $responseSales->getCode()
-                : $responsePayments->getCode(),
+            $responseSales->getRequest(),
+            $collection,
+            $responseSales->getCode(),
         );
     }
-
 
     /**
      * Get check details
@@ -190,7 +195,7 @@ class Gateway extends AbstractGateway
      * so a sample is made for the period and the receipt is searched.
      * He is trying to find a receipt in the pool for the last 24 hours.
      *
-     * @param string $id
+     * @param string $id UUID
      * @return AbstractDetailsReceiptResponse
      * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
      */
@@ -202,27 +207,32 @@ class Gateway extends AbstractGateway
             'deleted'   => false,
         ];
 
-        /** @var ListReceiptsResponse $response */
-        $response = $this->createRequest(static::classNamePaymentsReceiptsRequest(), $options)->send();
+        /** @var SalesReceiptResponse $responseSales */
+        $responseSales = $this->createRequest(static::classNameSalesReceiptsRequest(), $options)->send();
 
-        $receiptFind = null;
-        foreach ($response->getList() as $receipt) {
-            if ($receipt->getUuidOrNull() == $id) {
-                $receiptFind = $receipt;
+        /** @var Receipt|null $receiptSales */
+        $receiptSales = null;
+        foreach ($responseSales->getList() as $receipt) {
+            if ($receipt->getUuid() == $id) {
+                $receiptSales = $receipt;
                 break;
             }
         }
 
-        if (is_null($receiptFind)) {
-            $response = $this->createRequest(static::classNameSalesReceiptsRequest(), $options)->send();
-            foreach ($response->getList() as $receipt) {
-                if ($receipt->getUuidOrNull() == $id) {
-                    $receiptFind = $receipt;
-                    break;
-                }
+        if (is_null($receiptSales)) {
+            return new DetailsReceiptResponse($responseSales->getRequest(), null, $responseSales->getCode());
+        }
+
+        /** @var PaymentsReceiptResponse $responsePayments */
+        $responsePayments = $this->createRequest(static::classNamePaymentsReceiptsRequest(), $options)->send();
+
+        foreach ($responsePayments->getList() as $receiptPayment) {
+            if ($receiptPayment->getSaleUuid() == $id) {
+                $receiptSales->setPayment($receiptPayment);
+                break;
             }
         }
 
-        return new DetailsReceiptResponse($response->getRequest(), $receiptFind, $response->getCode());
+        return new DetailsReceiptResponse($responseSales->getRequest(), $receiptSales, $responseSales->getCode());
     }
 }

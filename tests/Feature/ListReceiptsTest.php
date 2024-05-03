@@ -54,8 +54,53 @@ class ListReceiptsTest extends MockTestCase
     public function testSuccessful()
     {
         $this->setMockHttpResponse([
-            'Payments_Successful.txt',
             'Sales_Successful.txt',
+            'Payments_Successful.txt',
+        ]);
+
+        $response = $this->gateway->listReceipts([
+            'date_from' => '2024-04-25 00:00:00',
+            'date_to'   => '2024-04-30 23:59:59',
+        ]);
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertEquals(1, $response->getList()->count());
+
+        $receipt = $response->getList()->first();
+        $this->assertInstanceOf(Receipt::class, $receipt);
+        $this->assertTrue($receipt->isSuccessful());
+    }
+
+    /**
+     * @return void
+     * @throws \Omnireceipt\Common\Exceptions\Parameters\ParameterValidateException
+     */
+    public function testPending()
+    {
+        $this->setMockHttpResponse([
+            'Sales_Successful.txt',
+            'Payments_Successful_Another.txt',
+        ]);
+
+        $response = $this->gateway->listReceipts([
+            'date_from' => '2024-04-25 00:00:00',
+            'date_to'   => '2024-04-30 23:59:59',
+        ]);
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertEquals(1, $response->getList()->count());
+
+        $receipt = $response->getList()->first();
+
+        $this->assertInstanceOf(Receipt::class, $receipt);
+        $this->assertTrue($receipt->isPending());
+    }
+
+    public function testTwo()
+    {
+        $this->setMockHttpResponse([
+            'Sales_Successful_Two.txt',
+            'Payments_Successful.txt',
         ]);
 
         $response = $this->gateway->listReceipts([
@@ -66,11 +111,13 @@ class ListReceiptsTest extends MockTestCase
         $this->assertTrue($response->isSuccessful());
         $this->assertEquals(2, $response->getList()->count());
 
-        $receiptPayments = $response->getList()->get(0);
+        $uuidList = $response->getList()->getKeys();
+
+        $receiptPayments = $response->getList()->get($uuidList[0]);
         $this->assertInstanceOf(Receipt::class, $receiptPayments);
         $this->assertTrue($receiptPayments->isSuccessful());
 
-        $receiptSales = $response->getList()->get(1);
+        $receiptSales = $response->getList()->get($uuidList[1]);
         $this->assertInstanceOf(Receipt::class, $receiptSales);
         $this->assertTrue($receiptSales->isPending());
     }

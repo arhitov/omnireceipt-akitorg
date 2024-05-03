@@ -19,7 +19,7 @@ use Omnireceipt\Common\Entities\Receipt as BaseReceipt;
  * @method self setDocNum(string $value)
  *
  * @method string getInfo() // Комментарий к документу
- * @method string getInfoOrNull()
+ * @method string getInfoOrNull() // Комментарий к документу
  * @method self setInfo(string $value)
  *
  * @method int getPayType()
@@ -31,7 +31,8 @@ use Omnireceipt\Common\Entities\Receipt as BaseReceipt;
  */
 class Receipt extends BaseReceipt
 {
-    protected ReceiptStateEnum $state;
+    protected ?ReceiptConfirmed $payment = null;
+    protected ReceiptStateEnum $state = ReceiptStateEnum::Saved;
 
     static public function rules(): array
     {
@@ -42,6 +43,18 @@ class Receipt extends BaseReceipt
             'info'     => ['nullable', 'string'],
             'pay_type' => ['required', 'numeric', 'in:0,1'],
         ];
+    }
+
+    public function getPayment(): ?ReceiptConfirmed
+    {
+        return $this->payment;
+    }
+
+    public function setPayment(ReceiptConfirmed $payment): self
+    {
+        $this->payment = $payment;
+        $this->setState(ReceiptStateEnum::Successful);
+        return $this;
     }
 
     public function getState(): ReceiptStateEnum
