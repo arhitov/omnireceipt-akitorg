@@ -90,4 +90,14 @@ class Receipt extends BaseReceipt
     {
         return false;
     }
+
+    public function toArray(): array
+    {
+        $array = parent::toArray();
+
+        $array['state'] = $this->getState()->value;
+        $array['payment'] = $this->getPayment();
+
+        return $array;
+    }
 }

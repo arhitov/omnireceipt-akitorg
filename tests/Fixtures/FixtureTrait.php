@@ -78,4 +78,49 @@ trait FixtureTrait
             ? json_decode($data, true, JSON_UNESCAPED_UNICODE)
             : $data;
     }
+
+    public static function receiptValidatedParameters(): array
+    {
+        return [
+            'uuid'     => '0ecab77f-7062-4a5f-aa20-35213db1397c',
+            'doc_date' => '2016-08-25 13:48:01',
+            'doc_num'  => 'ТД00-000001',
+            'pay_type' => '1',
+        ];
+    }
+
+    public static function receiptItemValidatedParameters(): array
+    {
+        return [
+            'name'         => 'Информационные услуги',
+            'code'         => 'info_goods',
+            'product_type' => 'SERVICE',
+            'quantity'     => 1,
+            'amount'       => 123.45,
+            'currency'     => 'RUB',
+            'unit'         => 'шт',
+            'unit_uuid'    => 'bd72d926-55bc-11d9-848a-00112f43529a',
+            'vat_rate'     => 0,
+            'tag1214'      => 4,
+        ];
+    }
+
+    public static function receiptCustomerValidatedParameters(): array
+    {
+        return [
+            'name'  => 'Ivanov Ivan',
+            'email' => 'vanya@yandex.ru',
+            'type'  => 2,
+        ];
+    }
+
+    public static function receiptSellerValidatedParameters(): array
+    {
+        return [
+            'name' => 'ООО "РОГА И КОПЫТА"',
+            'inn'  => '4025452616',
+            'site' => 'www.site.ru',
+            'ts'   => 'SIMPLIFIED_INCOME',
+        ];
+    }
 }
