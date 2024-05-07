@@ -11,6 +11,7 @@
 namespace Omnireceipt\AkiTorg\Http;
 
 use Omnireceipt\AkiTorg\Exceptions\Gateway\GatewayIncorrectTokenException;
+use Omnireceipt\AkiTorg\Exceptions\Gateway\GatewayPaymentRequiredException;
 use Psr\Http\Message\ResponseInterface;
 
 trait BaseRequestTrait
@@ -54,13 +55,10 @@ trait BaseRequestTrait
         $statusCode = $response->getStatusCode();
         if (401 === $statusCode) {
             throw new GatewayIncorrectTokenException();
+        } elseif (402 === $statusCode) {
+            throw new GatewayPaymentRequiredException();
         }
 
         return $response;
-    }
-
-    protected function decode($data)
-    {
-        return json_decode($data, true);
     }
 }

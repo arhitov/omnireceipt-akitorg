@@ -1,0 +1,72 @@
+{
+  "pay_type": "1",
+  "uuid": "0ecab77f-7062-4a5f-aa20-35213db1397c",
+  "date": "2024-05-07 08:33:52",
+  "firm_uuid": "6e526f3a-19e9-441a-9ec5-3746382d0f1d",
+  "firm_name": "ООО \"РОГА И КОПЫТА\"",
+  "firm_inn": "4025452616",
+  "firm_ts": "SIMPLIFIED_INCOME",
+  "doc_date": "2016-08-25 13:48:01",
+  "doc_num": "ТД00-000001",
+  "@seller": {
+    "name": "ООО \"РОГА И КОПЫТА\"",
+    "inn": "4025452616",
+    "site": "www.site.ru",
+    "ts": "SIMPLIFIED_INCOME",
+    "uuid": "fd72d8de-902d-4646-9ea8-05e6442688d4"
+  },
+  "@customer": {
+    "type": 2,
+    "uuid": "36737179-18b5-47c1-bcaa-e68068062ac9"
+  },
+  "@itemList": [
+    {
+      "name": "Информационные услуги",
+      "code": "info_goods",
+      "product_type": "SERVICE",
+      "quantity": 1,
+      "currency": "RUB",
+      "unit": "шт",
+      "unit_uuid": "bd72d926-55bc-11d9-848a-00112f43529a",
+      "vat_rate": 0,
+      "tag1214": 4,
+      "uuid": "787fc19d-c4b9-45ca-b2b9-6f43f3746e2a",
+      "amount": 123.45
+    }
+  ],
+  "@state": "successful",
+  "@payment": {
+    "uuid": "0ecab77f-7062-4a5f-aa20-35213db1397c",
+    "doc_date": "2016-08-25 13:48:01",
+    "doc_num": "ТД00-000001",
+    "sale_uuid": "find-7062-4a5f-aa20-35213db1397c",
+    "sale_date": "2016-08-25 13:48:39",
+    "@seller": {
+      "name": "ООО \"РОГА И КОПЫТА\"",
+      "inn": "4025452616",
+      "site": "www.site.ru",
+      "ts": "SIMPLIFIED_INCOME",
+      "uuid": "fd72d8de-902d-4646-9ea8-05e6442688d4"
+    },
+    "@customer": {
+      "type": 2,
+      "uuid": "36737179-18b5-47c1-bcaa-e68068062ac9"
+    },
+    "@itemList": [
+      {
+        "name": "Информационные услуги",
+        "code": "info_goods",
+        "product_type": "SERVICE",
+        "quantity": 1,
+        "currency": "RUB",
+        "unit": "шт",
+        "unit_uuid": "bd72d926-55bc-11d9-848a-00112f43529a",
+        "vat_rate": 0,
+        "tag1214": 4,
+        "uuid": "787fc19d-c4b9-45ca-b2b9-6f43f3746e2a",
+        "amount": 123.45
+      }
+    ],
+    "@state": "successful"
+  }
+}

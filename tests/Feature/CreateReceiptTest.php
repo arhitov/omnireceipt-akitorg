@@ -50,7 +50,7 @@ class CreateReceiptTest extends MockTestCase
         );
 
         $customer = $this->gateway->customerFactory(
-            self::receiptCustomerValidatedParameters(),
+            self::customerValidatedParameters(),
         );
         $receipt->setCustomer($customer);
 
@@ -68,7 +68,7 @@ class CreateReceiptTest extends MockTestCase
         );
 
         $customer = $this->gateway->customerFactory(
-            self::receiptCustomerValidatedParameters(),
+            self::customerValidatedParameters(),
         );
         $receipt->setCustomer($customer);
 
@@ -89,7 +89,7 @@ class CreateReceiptTest extends MockTestCase
         );
 
         $customer = $this->gateway->customerFactory(
-            self::receiptCustomerValidatedParameters(),
+            self::customerValidatedParameters(),
         );
         $receipt->setCustomer($customer);
 
@@ -122,12 +122,12 @@ class CreateReceiptTest extends MockTestCase
         );
 
         $customer = $this->gateway->customerFactory(
-            self::receiptCustomerValidatedParameters(),
+            self::customerValidatedParameters(),
         );
         $receipt->setCustomer($customer);
 
         $seller = $this->gateway->sellerFactory(
-            self::receiptSellerValidatedParameters(),
+            self::sellerValidatedParameters(),
         );
 
         $response = $this->gateway->createReceipt($receipt, seller: $seller);

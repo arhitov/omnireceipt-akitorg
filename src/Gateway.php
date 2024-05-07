@@ -13,6 +13,8 @@ namespace Omnireceipt\AkiTorg;
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Omnireceipt\AkiTorg\Entities\Receipt;
+use Omnireceipt\AkiTorg\Entities\ReceiptConfirmed;
+use Omnireceipt\AkiTorg\Enums\ReceiptStateEnum;
 use Omnireceipt\AkiTorg\Exceptions\Gateway\GatewayException;
 use Omnireceipt\AkiTorg\Http\CreateReceiptRequest;
 use Omnireceipt\AkiTorg\Http\DetailsReceiptResponse;
@@ -94,14 +96,11 @@ class Gateway extends AbstractGateway
         $properties['date'] ??= Helper::dateFormattingForSend(Carbon::now());
 
         $seller = $this->getSeller();
-        if ($seller) {
-            $properties['firm_uuid'] ??= $seller->getUuidOrNull(); // Идентификатор организации поставщика
-            $properties['firm_name'] ??= $seller->getNameOrNull(); // Наименование организации поставщика
-            $properties['firm_inn'] ??= $seller->getInnOrNull(); // ИНН организации поставщика
-            $properties['firm_address'] ??= $seller->getAddressOrNull(); // Адрес интернет-магазина
-            $properties['firm_ts'] ??= $seller->getTsOrNull(); // Система налогообложения
-            $properties = array_filter($properties);
-        }
+        $properties['firm_uuid'] ??= $seller->getUuidOrNull(); // Идентификатор организации поставщика
+        $properties['firm_name'] ??= $seller->getNameOrNull(); // Наименование организации поставщика
+        $properties['firm_inn'] ??= $seller->getInnOrNull(); // ИНН организации поставщика
+        $properties['firm_address'] ??= $seller->getAddressOrNull(); // Адрес интернет-магазина
+        $properties['firm_ts'] ??= $seller->getTsOrNull(); // Система налогообложения
 
         $customer = $this->getCustomer();
         if ($customer) {
@@ -113,10 +112,48 @@ class Gateway extends AbstractGateway
             $properties['client_docnum'] ??= $customer->getDocnumOrNull(); // Номер документа покупателя (тег 1246)
             $properties['client_birth'] ??= $customer->getBirthOrNull(); // Дата рождения покупателя в формате ГГГГ-ММ-ДД (тег 1243)
             $properties['emailphone'] ??= $customer->getEmailOrNull() ?? $customer->getPhoneOrNull(); // Email или телефон покупателя (необходимый атрибут)
-            $properties = array_filter($properties);
         }
 
-        return $properties;
+        return array_filter($properties);
+    }
+
+    public function receiptRestore(array $array, string $className = null, string $classItemName = null): Receipt
+    {
+        $parameters = $array;
+        unset(
+            $parameters['@state'],
+            $parameters['@payment'],
+        );
+
+        /** @var Receipt $receipt */
+        $receipt = parent::receiptRestore($parameters, $className, $classItemName);
+
+        if (! empty($array['@state'])) {
+            $receipt->setState(ReceiptStateEnum::from($array['@state']));
+        }
+
+        if (! empty($array['@payment'])) {
+            $receipt->setPayment($this->receiptConfirmedRestore($array['@payment']));
+        }
+
+        return $receipt;
+    }
+
+    public function receiptConfirmedRestore(array $array): ReceiptConfirmed
+    {
+        $parameters = $array;
+        unset(
+            $parameters['@state'],
+        );
+
+        /** @var ReceiptConfirmed $receipt */
+        $receipt = parent::receiptRestore($parameters, ReceiptConfirmed::class);
+
+        if (! empty($array['@state'])) {
+            $receipt->setState(ReceiptStateEnum::from($array['@state']));
+        }
+
+        return $receipt;
     }
 
     public function getDefaultParametersReceiptItem(): array

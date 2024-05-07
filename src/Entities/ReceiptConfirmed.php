@@ -11,7 +11,8 @@
 namespace Omnireceipt\AkiTorg\Entities;
 
 use Omnireceipt\AkiTorg\Enums\ReceiptStateEnum;
-use Omnireceipt\Common\Supports\ParametersTrait;
+use Omnireceipt\AkiTorg\Exceptions\Exception;
+use Omnireceipt\Common\Entities\Receipt as BaseReceipt;
 
 /**
  * @method string getSaleUuid() // Идентификатор документа основания оплаты
@@ -22,10 +23,8 @@ use Omnireceipt\Common\Supports\ParametersTrait;
  * @method string getSaleDateOrNull() // Дата документа основания оплаты
  * @method self setSaleDate(string $value)
  */
-class ReceiptConfirmed extends Receipt
+class ReceiptConfirmed extends BaseReceipt
 {
-    use ParametersTrait;
-
     protected ReceiptStateEnum $state = ReceiptStateEnum::Successful;
 
     static public function rules(): array
@@ -37,5 +36,47 @@ class ReceiptConfirmed extends Receipt
             'sale_uuid' => ['required', 'string'],
             'sale_date' => ['required', 'string'],
         ];
+    }
+
+    public function getState(): ReceiptStateEnum
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param ReceiptStateEnum $state
+     * @return self
+     * @throws Exception
+     */
+    public function setState(ReceiptStateEnum $state): self
+    {
+        if ($state !== ReceiptStateEnum::Successful) {
+            throw new Exception('This object cannot have a different state.');
+        }
+        return $this;
+    }
+
+    public function isSuccessful(): bool
+    {
+        return true;
+    }
+
+    public function isPending(): bool
+    {
+        return false;
+    }
+
+    public function isCancelled(): bool
+    {
+        return false;
+    }
+
+    public function toArray(): array
+    {
+        $array = parent::toArray();
+
+        $array['@state'] = $this->getState()->value;
+
+        return $array;
     }
 }

@@ -62,6 +62,19 @@ class Receipt extends BaseReceipt
     {
         $this->payment = $payment;
         $this->setState(ReceiptStateEnum::Successful);
+
+        // Данные различаться не могут, а чтобы не заполнять лишний раз, копируем.
+        $seller = $this->getSeller();
+        if ($seller) {
+            $payment->setSeller($seller);
+        }
+
+        // Данные различаться не могут, а чтобы не заполнять лишний раз, копируем.
+        $customer = $this->getCustomer();
+        if ($customer) {
+            $payment->setCustomer($customer);
+        }
+
         return $this;
     }
 
@@ -95,8 +108,8 @@ class Receipt extends BaseReceipt
     {
         $array = parent::toArray();
 
-        $array['state'] = $this->getState()->value;
-        $array['payment'] = $this->getPayment();
+        $array['@state'] = $this->getState()->value;
+        $array['@payment'] = $this->getPayment()?->toArray();
 
         return $array;
     }

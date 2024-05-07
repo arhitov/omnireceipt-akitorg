@@ -21,9 +21,10 @@ trait BaseResponseTrait
     public function orFail(): static
     {
         return match ($this->getCode()) {
-            400 => throw new GatewayExceptions\GatewayInvalidJsonPassedException(),
-            401 => throw new GatewayExceptions\GatewayIncorrectTokenException(),
-            409 => throw new GatewayExceptions\GatewayIncorrectStoreUUIDException(),
+            400 => throw new GatewayExceptions\GatewayInvalidJsonPassedException($this->getMessageByData(), 400),
+            401 => throw new GatewayExceptions\GatewayIncorrectTokenException($this->getMessageByData(), 401),
+            402 => throw new GatewayExceptions\GatewayPaymentRequiredException($this->getMessageByData(), 402),
+            409 => throw new GatewayExceptions\GatewayIncorrectStoreUUIDException($this->getMessageByData(), 409),
             default => $this,
         };
     }
@@ -31,5 +32,15 @@ trait BaseResponseTrait
     public function getPayload(): ?array
     {
         return json_decode($this->getData(), true);
+    }
+
+    protected function getMessageByData(): ?string
+    {
+        $data = $this->getData();
+        return match (true) {
+            is_object($data) && method_exists($data, 'getContents') => $data->getContents(),
+            is_string($data) => $data,
+            default => null,
+        };
     }
 }

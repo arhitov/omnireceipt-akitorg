@@ -1,7 +1,7 @@
 {
     "name": "arhitov/omnireceipt-akitorg",
     "description": "AkiTorg driver for Omnireceipt fiscal receipt processing library",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "type": "library",
     "license": "MIT",
     "keywords": [
@@ -30,12 +30,13 @@
     "require": {
         "php": "^8.1",
         "symfony/uid": "*",
-        "omnireceipt/common": "^1.1"
+        "omnireceipt/common": "^1.2.2",
+        "nesbot/carbon": "*"
     },
     "require-dev": {
         "guzzlehttp/psr7": "*",
         "phpunit/phpunit": "*",
-        "php-http/curl-client": "*",
+        "php-http/curl-client": "^2.3",
         "php-http/mock-client": "*",
         "mockery/mockery": "*",
         "ext-readline": "*"

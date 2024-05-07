@@ -105,7 +105,18 @@ trait FixtureTrait
         ];
     }
 
-    public static function receiptCustomerValidatedParameters(): array
+    public static function receiptConfirmedValidatedParameters(): array
+    {
+        return [
+            'uuid'     => '0ecab77f-7062-4a5f-aa20-35213db1397c',
+            'doc_date' => '2016-08-25 13:48:01',
+            'doc_num'  => 'ТД00-000001',
+            'sale_uuid' => 'find-7062-4a5f-aa20-35213db1397c',
+            'sale_date' => '2016-08-25 13:48:39',
+        ];
+    }
+
+    public static function customerValidatedParameters(): array
     {
         return [
             'name'  => 'Ivanov Ivan',
@@ -114,7 +125,7 @@ trait FixtureTrait
         ];
     }
 
-    public static function receiptSellerValidatedParameters(): array
+    public static function sellerValidatedParameters(): array
     {
         return [
             'name' => 'ООО "РОГА И КОПЫТА"',

@@ -24,9 +24,9 @@ class ReceiptTest extends TestCase
 
         $array = $receipt->toArray();
         $this->assertIsArray($array);
-        $this->assertArrayHasKey('state', $array);
-        $this->assertEquals($array['state'], $receipt->getState()->value);
-        $this->assertArrayHasKey('payment', $array);
-        $this->assertNull($array['payment']);
+        $this->assertArrayHasKey('@state', $array);
+        $this->assertEquals($array['@state'], $receipt->getState()->value);
+        $this->assertArrayHasKey('@payment', $array);
+        $this->assertNull($array['@payment']);
     }
 }

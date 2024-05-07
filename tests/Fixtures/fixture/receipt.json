@@ -1,0 +1,39 @@
+{
+  "pay_type": "1",
+  "uuid": "0ecab77f-7062-4a5f-aa20-35213db1397c",
+  "date": "2024-05-07 08:38:06",
+  "firm_uuid": "abec0af5-193b-4474-b6ea-87b2a957cea6",
+  "firm_name": "ООО \"РОГА И КОПЫТА\"",
+  "firm_inn": "4025452616",
+  "firm_ts": "SIMPLIFIED_INCOME",
+  "doc_date": "2016-08-25 13:48:01",
+  "doc_num": "ТД00-000001",
+  "@seller": {
+    "name": "ООО \"РОГА И КОПЫТА\"",
+    "inn": "4025452616",
+    "site": "www.site.ru",
+    "ts": "SIMPLIFIED_INCOME",
+    "uuid": "42602486-402e-4b8e-95e6-2e4ad758d803"
+  },
+  "@customer": {
+    "type": 2,
+    "uuid": "d54c33b5-423c-44e5-aa50-c39354c0330d"
+  },
+  "@itemList": [
+    {
+      "name": "Информационные услуги",
+      "code": "info_goods",
+      "product_type": "SERVICE",
+      "quantity": 1,
+      "currency": "RUB",
+      "unit": "шт",
+      "unit_uuid": "bd72d926-55bc-11d9-848a-00112f43529a",
+      "vat_rate": 0,
+      "tag1214": 4,
+      "uuid": "896034cd-2b03-4107-861d-d841d947d7f1",
+      "amount": 123.45
+    }
+  ],
+  "@state": "saved",
+  "@payment": null
+}

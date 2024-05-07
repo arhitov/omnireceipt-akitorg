@@ -12,13 +12,13 @@ namespace Omnireceipt\AkiTorg\Exceptions\Gateway;
 
 use Throwable;
 
-class GatewayIncorrectStoreUUIDException extends GatewayException
+class GatewayPaymentRequiredException extends GatewayException
 {
     #[\JetBrains\PhpStorm\Pure]
     public function __construct(string $message = null, int $code = 0, ?Throwable $previous = null)
     {
         parent::__construct(
-            $message ?? 'Invalid storeUUID',
+            $message ?? 'Payment required',
             $code,
             $previous,
         );

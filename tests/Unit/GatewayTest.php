@@ -19,6 +19,7 @@ use Omnireceipt\Common\Contracts\CustomerInterface;
 use Omnireceipt\Common\Contracts\SellerInterface;
 use Omnireceipt\Common\Entities\Customer as BaseCustomer;
 use Omnireceipt\Common\Entities\Seller as BaseSeller;
+use PHPUnit\Framework\Attributes\Depends;
 
 class GatewayTest extends TestCase
 {
@@ -81,5 +82,38 @@ class GatewayTest extends TestCase
 
         $this->assertTrue($receipt->validate());
         $this->assertEquals(469.12, $receipt->getAmount());
+    }
+
+    /**
+     * @depends testBase
+     * @return void
+     */
+    #[Depends('testBase')]
+    public function testRestoreReceipt()
+    {
+        $receiptArray = $this->fixtureAsArray('receipt');
+        $receipt = $this->gateway->receiptRestore($receiptArray);
+        $this->assertTrue($receipt->validate());
+
+        $this->assertEquals($receiptArray['pay_type'], $receipt->getPayType());
+        $this->assertEquals($receiptArray['uuid'], $receipt->getUuid());
+        $this->assertEquals($receiptArray['date'], $receipt->getDate());
+        $this->assertEquals($receiptArray['firm_uuid'], $receipt->getFirmUuid());
+        $this->assertEquals($receiptArray['firm_name'], $receipt->getFirmName());
+        $this->assertEquals($receiptArray['firm_inn'], $receipt->getFirmInn());
+        $this->assertEquals($receiptArray['firm_ts'], $receipt->getFirmTs());
+        $this->assertEquals($receiptArray['doc_date'], $receipt->getDocDate());
+        $this->assertEquals($receiptArray['doc_num'], $receipt->getDocNum());
+        $this->assertEquals($receiptArray['@state'], $receipt->getState()->value);
+
+        $this->assertEquals($receiptArray['@seller'], $receipt->getSeller()->toArray());
+        $this->assertEquals($receiptArray['@customer'], $receipt->getCustomer()->toArray());
+        $this->assertEquals($receiptArray['@itemList'][0], $receipt->getItemList()->first()->toArray());
+        $this->assertNull($receipt->getPayment());
+
+        $receiptArray = $this->fixtureAsArray('receipt_confirmed');
+        $receipt = $this->gateway->receiptRestore($receiptArray);
+        $this->assertTrue($receipt->validate());
+        $this->assertEquals($receiptArray['@payment'], $receipt->getPayment()->toArray());
     }
 }
