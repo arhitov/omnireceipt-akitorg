@@ -78,6 +78,11 @@ class Receipt extends BaseReceipt
         return $this;
     }
 
+    public function getId(): string
+    {
+        return $this->getUuid();
+    }
+
     public function getState(): ReceiptStateEnum
     {
         return $this->state;
