@@ -51,7 +51,7 @@ class Gateway extends AbstractGateway
     // Seller
     //########
 
-    public static function classNameSeller(): string
+    public function classNameSeller(): string
     {
         return Seller::class;
     }
@@ -67,7 +67,7 @@ class Gateway extends AbstractGateway
     // Customer
     //##########
 
-    public static function classNameCustomer(): string
+    public function classNameCustomer(): string
     {
         return Customer::class;
     }
@@ -83,7 +83,7 @@ class Gateway extends AbstractGateway
     // Receipt and ReceiptItem
     //#########################
 
-    public static function classNameReceipt(): string
+    public function classNameReceipt(): string
     {
         return Receipt::class;
     }
@@ -167,24 +167,24 @@ class Gateway extends AbstractGateway
     // HTTP Request Methods
     //######################
 
-    public static function classNameCreateReceiptRequest(): string
+    public function classNameCreateReceiptRequest(): string
     {
         return CreateReceiptRequest::class;
     }
 
-    public static function classNameListReceiptsRequest(): string
+    public function classNameListReceiptsRequest(): string
     {
         throw new GatewayException('Implementation is different');
     }
-    public static function classNameDetailsReceiptRequest(): string
+    public function classNameDetailsReceiptRequest(): string
     {
         throw new GatewayException('Implementation is different');
     }
-    public static function classNamePaymentsReceiptsRequest(): string
+    public function classNamePaymentsReceiptsRequest(): string
     {
         return PaymentsReceiptRequest::class;
     }
-    public static function classNameSalesReceiptsRequest(): string
+    public function classNameSalesReceiptsRequest(): string
     {
         return SalesReceiptRequest::class;
     }
@@ -201,10 +201,10 @@ class Gateway extends AbstractGateway
     public function listReceipts(array $options = []): AbstractListReceiptsResponse
     {
         /** @var SalesReceiptResponse $responseSales */
-        $responseSales = $this->createRequest(static::classNameSalesReceiptsRequest(), $options)->send();
+        $responseSales = $this->createRequest($this->classNameSalesReceiptsRequest(), $options)->send();
 
         /** @var PaymentsReceiptResponse $responsePayments */
-        $responsePayments = $this->createRequest(static::classNamePaymentsReceiptsRequest(), $options)->send();
+        $responsePayments = $this->createRequest($this->classNamePaymentsReceiptsRequest(), $options)->send();
 
         $collection = new ArrayCollection;
 
@@ -245,7 +245,7 @@ class Gateway extends AbstractGateway
         ];
 
         /** @var SalesReceiptResponse $responseSales */
-        $responseSales = $this->createRequest(static::classNameSalesReceiptsRequest(), $options)->send();
+        $responseSales = $this->createRequest($this->classNameSalesReceiptsRequest(), $options)->send();
 
         /** @var Receipt|null $receiptSales */
         $receiptSales = null;
@@ -261,7 +261,7 @@ class Gateway extends AbstractGateway
         }
 
         /** @var PaymentsReceiptResponse $responsePayments */
-        $responsePayments = $this->createRequest(static::classNamePaymentsReceiptsRequest(), $options)->send();
+        $responsePayments = $this->createRequest($this->classNamePaymentsReceiptsRequest(), $options)->send();
 
         foreach ($responsePayments->getList() as $receiptPayment) {
             if ($receiptPayment->getSaleUuid() == $id) {
