@@ -46,8 +46,8 @@ class Receipt extends BaseReceipt
     {
         return [
             'uuid'     => ['required', 'string'],
-            'doc_date' => ['required', 'string'],
-            'doc_num'  => ['required', 'string'],
+            'doc_date' => ['nullable', 'string'],
+            'doc_num'  => ['nullable', 'string'],
             'info'     => ['nullable', 'string'],
             'pay_type' => ['required', 'numeric', 'in:0,1'],
         ];
