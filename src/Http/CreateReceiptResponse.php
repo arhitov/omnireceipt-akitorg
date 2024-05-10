@@ -19,6 +19,6 @@ class CreateReceiptResponse extends AbstractCreateReceiptResponse
     public function isSuccessful(): bool
     {
         $payload = $this->getPayload();
-        return 200 === $this->getCode() && array_key_exists('added', $payload);
+        return 200 === $this->getCode() && array_key_exists('added', $payload ?: []);
     }
 }
