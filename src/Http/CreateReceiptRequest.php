@@ -73,8 +73,8 @@ class CreateReceiptRequest extends AbstractCreateReceiptRequest
 
         return array_filter([
             'uuid'            => $receipt->getUuid(),                                  // String Идентификатор документа, required
-            'doc_date'        => $receipt->getDateOrNull() ? Helper::dateFormattingForSend($receipt->getDateOrNull()) : null, // String Дата документа, required (2016-08-25 13:48:01)
-            'doc_num'         => $receipt->getDocNumOrNull(),                          // String Номер документа, required
+            'doc_date'        =>  Helper::dateFormattingForSend($receipt->getDate()),  // String Дата документа, required (2016-08-25 13:48:01)
+            'doc_num'         => $receipt->getDocNum(),                                // String Номер документа, required
             'client_uuid'     => $customer->getUuid(),                                 // String Идентификатор покупателя, required
             'client_name'     => $customer->getName(),                                 // String Наименование покупателя, required
             'client_inn'      => $customer->getInnOrNull(),                            // String ИНН покупателя или номер паспорта

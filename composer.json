@@ -1,7 +1,7 @@
 {
     "name": "arhitov/omnireceipt-akitorg",
     "description": "AkiTorg driver for Omnireceipt fiscal receipt processing library",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "type": "library",
     "license": "MIT",
     "keywords": [
